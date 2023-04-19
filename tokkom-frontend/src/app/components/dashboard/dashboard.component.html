@@ -1,0 +1,50 @@
+<mat-toolbar class="mat-elevation-z8">
+  <div class="container">
+    <span><mat-icon>eco</mat-icon> Blimanik</span>
+    <div class="spacer"></div>
+
+    <div *ngIf="this.isMobile">
+      <button type="button" mat-icon-button (click)="sideToggle()">
+        <mat-icon *ngIf="!sidelanding.opened">menu</mat-icon>
+        <mat-icon *ngIf="sidelanding.opened">close</mat-icon>
+      </button>
+    </div>
+
+    <div style="display: flex" *ngIf="!this.isMobile">
+      <a class="land-menu" mat-button>Home</a>
+      <div>
+        <a class="land-menu" mat-button [matMenuTriggerFor]="menu">Product</a>
+        <mat-menu #menu="matMenu" class="matMenu">
+          <button mat-menu-item>Product 1</button>
+          <button mat-menu-item>Product 2</button>
+        </mat-menu>
+      </div>
+      <a class="land-menu" mat-button>About Us</a>
+      <a class="land-menu" mat-button>Contact Us</a>
+      <a mat-raised-button color="accent">Sign Up</a>
+    </div>
+  </div>
+</mat-toolbar>
+
+<mat-sidenav-container hasBackdrop="false">
+  <mat-sidenav class="mat-elevation-z0" mode="side" #sidenav>
+    <a mat-button class="menu-button">
+      <mat-icon class="nav-menu">home</mat-icon>
+      <span class="btn-text">Home</span>
+    </a>
+    <a mat-button class="menu-button">
+      <mat-icon class="nav-menu">markunread_mailbox</mat-icon>
+      <span class="btn-text">Product</span>
+    </a>
+    <mat-divider></mat-divider>
+    <a mat-button class="menu-button">
+      <mat-icon class="nav-menu">help</mat-icon>
+      <span class="btn-text">About Us</span>
+    </a>
+    <a mat-button class="menu-button">
+      <mat-icon class="nav-menu"> contacts</mat-icon>
+      <span class="btn-text">Contact Us</span>
+    </a>
+  </mat-sidenav>
+  <mat-sidenav-content><router-outlet></router-outlet></mat-sidenav-content>
+</mat-sidenav-container>

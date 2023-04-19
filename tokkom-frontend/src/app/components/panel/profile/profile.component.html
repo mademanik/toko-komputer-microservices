@@ -1,0 +1,13 @@
+<div>
+  <img
+    mat-button
+    [matMenuTriggerFor]="menu"
+    src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+    alt="Avatar photo"
+  />
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Profile</button>
+    <button mat-menu-item (click)="logout()">Log Out</button>
+  </mat-menu>
+</div>

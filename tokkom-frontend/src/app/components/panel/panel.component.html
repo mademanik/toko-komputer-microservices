@@ -1,0 +1,51 @@
+<mat-toolbar>
+  <button
+    class="sidebar-toggle"
+    type="button"
+    aria-label="Toggle sidebar"
+    mat-icon-button
+    (click)="sidenavToggle()"
+  >
+    <div *ngIf="this.isMobile">
+      <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
+      <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+    </div>
+
+    <div *ngIf="!this.isMobile">
+      <mat-icon>menu</mat-icon>
+    </div>
+  </button>
+
+  <app-profile></app-profile>
+</mat-toolbar>
+
+<mat-sidenav-container>
+  <mat-sidenav mode="side" #sidenav>
+    <img
+      class="avatar mat-elevation-z8"
+      src="https://source.unsplash.com/c_GmwfHBDzk/200x200"
+    />
+
+    <h4 class="name">John Smith</h4>
+    <p class="designation">Software Engineer</p>
+
+    <mat-divider></mat-divider>
+    <a mat-button class="menu-button" routerLink="/panel/home">
+      <mat-icon>home</mat-icon>
+      <span class="btn-text">Home</span>
+    </a>
+    <a mat-button class="menu-button" routerLink="/panel/about">
+      <mat-icon>info</mat-icon>
+      <span class="btn-text">About</span>
+    </a>
+    <mat-divider></mat-divider>
+    <a mat-button class="menu-button" routerLink="/panel/help">
+      <mat-icon>help</mat-icon>
+      <span class="btn-text">Help</span>
+    </a>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content mat-elevation-z4"><router-outlet></router-outlet></div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
