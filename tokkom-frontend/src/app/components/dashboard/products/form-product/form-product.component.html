@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>Product Form</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-form-field class="form-first" appearance="outline">
+    <mat-label>Product Name</mat-label>
+    <input matInput placeholder="Input Product Name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Customer Name</mat-label>
+    <input matInput placeholder="Input Customer Name" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Quantity</mat-label>
+    <input matInput placeholder="Input Product Qty" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea placeholder="Input Product Description" matInput></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="accent" mat-dialog-close>Cancel</button>
+  <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>
+    Submit
+  </button>
+</mat-dialog-actions>
