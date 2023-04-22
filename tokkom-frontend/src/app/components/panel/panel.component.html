@@ -19,7 +19,7 @@
   <app-profile></app-profile>
 </mat-toolbar>
 
-<mat-sidenav-container>
+<mat-sidenav-container id="sidenav">
   <mat-sidenav mode="side" #sidenav>
     <img
       class="avatar mat-elevation-z8"
@@ -30,18 +30,18 @@
     <p class="designation">Software Engineer</p>
 
     <mat-divider></mat-divider>
-    <a mat-button class="menu-button" routerLink="/panel/home">
+    <a mat-button class="menu-button active" routerLink="/panel/home">
       <mat-icon>home</mat-icon>
       <span class="btn-text">Home</span>
     </a>
-    <a mat-button class="menu-button" routerLink="/panel/about">
-      <mat-icon>info</mat-icon>
-      <span class="btn-text">About</span>
+    <a mat-button class="menu-button" routerLink="/panel/products">
+      <mat-icon>shopping_cart</mat-icon>
+      <span class="btn-text">Products</span>
     </a>
     <mat-divider></mat-divider>
     <a mat-button class="menu-button" routerLink="/panel/help">
-      <mat-icon>help</mat-icon>
-      <span class="btn-text">Help</span>
+      <mat-icon>logout</mat-icon>
+      <span class="btn-text">Logout</span>
     </a>
   </mat-sidenav>
 

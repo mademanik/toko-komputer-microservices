@@ -11,7 +11,7 @@ export class JumbotonComponent implements OnInit {
 
   ngOnInit() {
     const options = {
-      strings: ['Welcome to ToKKom...', 'Every digital tools are available here....'],
+      strings: ['Welcome to ToKKom...', 'Lots of digital tools are available here....'],
       typeSpeed: 50,
       backSpeed: 50,
       showCursor: false,

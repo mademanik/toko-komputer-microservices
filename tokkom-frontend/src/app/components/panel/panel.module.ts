@@ -10,13 +10,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRippleModule } from '@angular/material/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
 
 // Components
 import { PanelComponent } from './panel.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from '../pages/home/home.component';
-import { AboutComponent } from '../pages/about/about.component';
-import { HelpComponent } from '../pages/help/help.component';
+import { ProductsComponent } from './products/products.component';
 
 const routes: Routes = [
   {
@@ -25,14 +26,18 @@ const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       { path: 'home', component: HomeComponent },
-      { path: 'about', component: AboutComponent },
-      { path: 'help', component: HelpComponent },
+      { path: 'products', component: ProductsComponent },
     ],
   },
 ];
 
 @NgModule({
-  declarations: [PanelComponent, ProfileComponent],
+  declarations: [
+    PanelComponent,
+    ProfileComponent,
+    ProductsComponent,
+    HomeComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -43,6 +48,8 @@ const routes: Routes = [
     MatMenuModule,
     MatSidenavModule,
     MatDividerModule,
+    MatCardModule,
+    MatTableModule,
     RouterModule.forChild(routes),
   ],
 })

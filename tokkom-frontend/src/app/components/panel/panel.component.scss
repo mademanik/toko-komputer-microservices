@@ -2,7 +2,7 @@ mat-sidenav {
   margin: 16px;
   width: 200px;
   border-right: none;
-  background: #002b5c;
+  background: #023e84;
   color: white;
   border-radius: 10px;
   padding: 16px;
@@ -13,11 +13,9 @@ mat-sidenav {
   height: calc(100vh - 98px);
   margin: 16px;
   margin-left: 32px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
+  font-size: 1rem;
   color: lightgray;
+  background: #eee;
   border-radius: 10px;
 }
 
@@ -31,6 +29,7 @@ mat-sidenav-container {
   align-items: center;
   justify-content: flex-start;
   font-size: 1rem;
+  margin-top: 10px;
 }
 
 mat-icon {
@@ -89,4 +88,13 @@ app-profile {
   .sidebar-toggle {
     display: block;
   }
+}
+
+#sidenav a.active {
+  background: #ff7518;
+}
+
+#sidenav a:hover {
+  background-color: #ff7518;
+  opacity: 0.7;
 }

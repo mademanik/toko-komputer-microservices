@@ -31,11 +31,12 @@ import { FooterComponent } from './components/dashboard/footer/footer.component'
 import {MatDialogModule} from '@angular/material/dialog';
 import { FormProductComponent } from './components/dashboard/products/form-product/form-product.component';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { ServicesComponent } from './components/dashboard/services/services.component';
 
 
 
 @NgModule({
-  declarations: [AppComponent, DashboardComponent, JumbotonComponent, ProductsComponent, NavbarComponent, FooterComponent, FormProductComponent],
+  declarations: [AppComponent, DashboardComponent, JumbotonComponent, ProductsComponent, NavbarComponent, FooterComponent, FormProductComponent, ServicesComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

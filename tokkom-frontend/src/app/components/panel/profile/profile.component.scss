@@ -4,8 +4,13 @@ div {
 }
 
 img {
- border-radius: 50%;
- width: 40px;
- height: 40px;
- cursor: pointer;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.mobile-menu:hover {
+  background-color: #ff7518;
+  opacity: 0.8;
 }
