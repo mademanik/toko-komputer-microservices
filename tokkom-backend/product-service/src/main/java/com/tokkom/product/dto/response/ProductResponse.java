@@ -21,4 +21,5 @@ public class ProductResponse {
     private String category;
     private String thumbnail;
     private List<String> images;
+    private String url;
 }

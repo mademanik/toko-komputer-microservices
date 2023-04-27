@@ -19,7 +19,5 @@ public class ProductRequest {
     private Double stock;
     private String brand;
     private String category;
-    private String thumbnail;
-    private List<String> images;
 
 }

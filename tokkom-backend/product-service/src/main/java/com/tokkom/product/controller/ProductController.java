@@ -1,5 +1,7 @@
 package com.tokkom.product.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.net.HttpHeaders;
 import com.tokkom.product.dto.request.ProductRequest;
 import com.tokkom.product.dto.request.ProductStockRequest;
 import com.tokkom.product.dto.response.ProductResponse;
@@ -8,13 +10,12 @@ import com.tokkom.product.model.Product;
 import com.tokkom.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import org.springframework.core.io.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +53,14 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) {
+    public ResponseEntity<ProductResponse> createProduct(@RequestParam("product") String product, @RequestParam("thumbnail") MultipartFile thumbnail, @RequestParam("images") MultipartFile[] images) {
+        ProductRequest productRequest = new ProductRequest();
+
         try {
-            ProductResponse productResponse = productService.createProduct(productRequest);
+            ObjectMapper objectMapper = new ObjectMapper();
+            productRequest = objectMapper.readValue(product, ProductRequest.class);
+
+            ProductResponse productResponse = productService.createProduct(productRequest, thumbnail, images);
             return new ResponseEntity<>(productResponse, HttpStatus.CREATED);
         } catch (Exception e) {
             log.info("Error creating product {}", e.getMessage());
@@ -131,5 +137,16 @@ public class ProductController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/download/{id}/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> getDownload(@PathVariable String id, @PathVariable String filename) {
+        log.info("Download Request: " + filename + " with id " + id);
+        Resource file = productService.load(id, filename);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
+    }
+
 
 }
