@@ -1,8 +1,9 @@
 package com.tokkom.product.service;
 
 import com.tokkom.product.dto.request.ProductRequest;
+import com.tokkom.product.dto.request.ProductStockRequest;
 import com.tokkom.product.dto.response.ProductResponse;
-import com.tokkom.product.models.Product;
+import com.tokkom.product.model.Product;
 import com.tokkom.product.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    public Product createProduct(ProductRequest productRequest) {
+    public ProductResponse createProduct(ProductRequest productRequest) {
         Product product = Product.builder()
                 .title(productRequest.getTitle())
                 .description(productRequest.getDescription())
@@ -34,30 +35,34 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
         log.info("Product : {} is successfully saved", product.getId());
 
-        return product;
+        return mapToProductResponse(product);
     }
 
     @Override
     public List<ProductResponse> getAllProducts() {
         List<Product> products = productRepository.findAll();
+        log.info("getAllProducts successfully retrieved");
         return products.stream().map(this::mapToProductResponse).collect(Collectors.toList());
     }
 
     @Override
     public List<ProductResponse> getAllProductsByTitle(String title) {
         List<Product> products = productRepository.findByTitleContaining(title);
+        log.info("getAllProductsByTitle: {} successfully retrieved", title);
         return products.stream().map(this::mapToProductResponse).collect(Collectors.toList());
     }
 
     @Override
     public List<ProductResponse> getAllProductsByCategory(String category) {
         List<Product> products = productRepository.findByCategoryContaining(category);
+        log.info("getAllProductsByCategory: {} successfully retrieved", category);
         return products.stream().map(this::mapToProductResponse).collect(Collectors.toList());
     }
 
     @Override
     public Optional<ProductResponse> getProductById(String id) {
         Optional<Product> product = productRepository.findById(id);
+        log.info("getProductById: {} successfully retrieved", id);
         return product.map(this::mapToProductResponse);
     }
 
@@ -65,6 +70,31 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProductById(String id) {
         productRepository.deleteById(id);
         log.info("Product with id: {} is successfully deleted", id);
+    }
+
+    @Override
+    public ProductStockRequest getProductStock(String id) {
+        ProductStockRequest productStockRequest = productRepository.findProductStockById(id);
+        log.info("getProductStock: {} successfully retrieved", id);
+        return productStockRequest;
+    }
+
+    @Override
+    public Boolean updateProductStock(String id, Double currentStock, Double reqStock) {
+        Optional<Product> productData = productRepository.findById(id);
+
+        if (productData.isPresent()) {
+            Product product = productData.get();
+            product.setStock(currentStock - reqStock);
+
+            log.info("Updated product with id: " + id + ", currentStock: " + currentStock + ", reqStock: " + reqStock);
+            log.info("Product Stock with id: {} is successfully updated", id);
+            productRepository.save(product);
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @Override

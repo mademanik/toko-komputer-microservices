@@ -1,13 +1,17 @@
-package com.tokkom.product.controllers;
+package com.tokkom.product.controller;
 
 import com.tokkom.product.dto.request.ProductRequest;
 import com.tokkom.product.dto.request.ProductStockRequest;
 import com.tokkom.product.dto.response.ProductResponse;
 import com.tokkom.product.dto.response.ProductStockResponse;
-import com.tokkom.product.models.Product;
+import com.tokkom.product.model.Product;
 import com.tokkom.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +34,13 @@ public class ProductController {
         try {
             ProductStockRequest productStockRequest = productService.getProductStock(id);
 
-            Double stockNumber = productStockRequest.getStock();
+            Double currentStock = productStockRequest.getStock();
 
             ProductStockResponse productStockResponse = new ProductStockResponse();
 
-            if (stockNumber >= qty) {
+            if (currentStock >= qty) {
                 productStockResponse.setIsProductInStock(true);
+                productService.updateProductStock(id, currentStock, qty);
             } else {
                 productStockResponse.setIsProductInStock(false);
             }
@@ -49,20 +54,7 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) {
         try {
-            Product product = productService.createProduct(productRequest);
-
-            ProductResponse productResponse = ProductResponse.builder()
-                    .id(product.getId())
-                    .title(product.getTitle())
-                    .description(product.getDescription())
-                    .price(product.getPrice())
-                    .stock(product.getStock())
-                    .brand(product.getBrand())
-                    .category(product.getCategory())
-                    .thumbnail(product.getThumbnail())
-                    .images(product.getImages())
-                    .build();
-
+            ProductResponse productResponse = productService.createProduct(productRequest);
             return new ResponseEntity<>(productResponse, HttpStatus.CREATED);
         } catch (Exception e) {
             log.info("Error creating product {}", e.getMessage());

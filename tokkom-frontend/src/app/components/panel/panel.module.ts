@@ -12,12 +12,17 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 // Components
 import { PanelComponent } from './panel.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from '../pages/home/home.component';
 import { ProductsComponent } from './products/products.component';
+import { AddProductComponent } from './products/add-product/add-product.component';
 
 const routes: Routes = [
   {
@@ -37,6 +42,7 @@ const routes: Routes = [
     ProfileComponent,
     ProductsComponent,
     HomeComponent,
+    AddProductComponent,
   ],
   imports: [
     CommonModule,
@@ -50,6 +56,10 @@ const routes: Routes = [
     MatDividerModule,
     MatCardModule,
     MatTableModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatPaginatorModule,
     RouterModule.forChild(routes),
   ],
 })

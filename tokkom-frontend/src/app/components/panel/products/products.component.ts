@@ -1,26 +1,67 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { AddEventListenerOptions } from 'rxjs/internal/observable/fromEvent';
+import { AddProductComponent } from './add-product/add-product.component';
+import { MatTableDataSource } from '@angular/material/table';
 
 export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+  no: number;
+  title: string;
+  brand: string;
+  category: string;
+  action: string;
 }
 
 const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
+  {
+    no: 1,
+    title: 'Robot Headset G10',
+    brand: 'Robot',
+    category: 'Headset',
+    action: '',
+  },
+  {
+    no: 2,
+    title: 'Infinix Smartphone',
+    brand: 'Infinix',
+    category: 'Smartphone',
+    action: '',
+  },
+  {
+    no: 3,
+    title: 'Asus TUF Gming',
+    brand: 'Asus',
+    category: 'Laptop',
+    action: '',
+  },
 ];
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss']
+  styleUrls: ['./products.component.scss'],
 })
-export class ProductsComponent {
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
-  dataSource = ELEMENT_DATA;
+export class ProductsComponent implements AfterViewInit {
+  displayedColumns: string[] = ['no', 'title', 'brand', 'category','action'];
+  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+
+  @ViewChild(MatPaginator) paginator: any = MatPaginator;
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  constructor(public dialog: MatDialog) {}
+
+  openDialog() {
+    const dialogRef = this.dialog.open(AddProductComponent, {
+      width: '50%',
+      position: { top: '20px' },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
 }

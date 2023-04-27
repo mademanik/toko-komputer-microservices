@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Add Product</h2>
+<mat-dialog-content class="mat-typography">
+  <mat-form-field class="form-first" appearance="outline">
+    <mat-label>Title</mat-label>
+    <input matInput placeholder="Product Title" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Category</mat-label>
+    <input matInput placeholder="Product Category" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Brand</mat-label>
+    <input matInput placeholder="Product Brand" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Price</mat-label>
+    <input matInput placeholder="Product Price" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Stock</mat-label>
+    <input matInput placeholder="Product Stock" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Thumbnail</mat-label>
+    <input matInput placeholder="Product Thumbnail" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Images</mat-label>
+    <input matInput placeholder="Product Images" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea placeholder="Input Product Description" matInput></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="accent" mat-dialog-close>Cancel</button>
+  <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>
+    Submit
+  </button>
+</mat-dialog-actions>

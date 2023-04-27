@@ -1,4 +1,4 @@
-package com.tokkom.product.models;
+package com.tokkom.product.model;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;

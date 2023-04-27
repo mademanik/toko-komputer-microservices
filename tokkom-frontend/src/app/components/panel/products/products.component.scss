@@ -21,6 +21,19 @@
   color: var(--dark);
 }
 
+#content main .head-title .btn-add {
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 36px;
+  background: var(--blue);
+  color: var(--light);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-gap: 10px;
+  font-weight: 500;
+}
+
 #content main .head-title .left .breadcrumb {
   display: flex;
   align-items: center;
@@ -63,5 +76,14 @@ mat-card {
 
 table {
   width: 100%;
-  // box-shadow: none;
+}
+
+.table-container {
+  height: 400px;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.btn-icon {
+  margin-right: 10px;
 }
