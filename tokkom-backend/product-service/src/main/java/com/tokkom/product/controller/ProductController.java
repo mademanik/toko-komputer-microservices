@@ -1,7 +1,9 @@
 package com.tokkom.product.controllers;
 
 import com.tokkom.product.dto.request.ProductRequest;
+import com.tokkom.product.dto.request.ProductStockRequest;
 import com.tokkom.product.dto.response.ProductResponse;
+import com.tokkom.product.dto.response.ProductStockResponse;
 import com.tokkom.product.models.Product;
 import com.tokkom.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,27 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @GetMapping("/stock/{id}/{qty}")
+    public ResponseEntity<ProductStockResponse> getProductStock(@PathVariable("id") String id, @PathVariable("qty") Double qty) {
+        try {
+            ProductStockRequest productStockRequest = productService.getProductStock(id);
+
+            Double stockNumber = productStockRequest.getStock();
+
+            ProductStockResponse productStockResponse = new ProductStockResponse();
+
+            if (stockNumber >= qty) {
+                productStockResponse.setIsProductInStock(true);
+            } else {
+                productStockResponse.setIsProductInStock(false);
+            }
+
+            return new ResponseEntity<>(productStockResponse, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping
     public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest productRequest) {
