@@ -24,5 +24,6 @@ public class Notification implements Serializable {
     private String message;
     private String serviceName;
     private Date createdAt;
+    private Integer isExpired;
 
 }

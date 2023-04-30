@@ -2,7 +2,6 @@ package org.tokkom;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -11,7 +10,6 @@ import org.tokkom.constant.AppConstants;
 import org.tokkom.dto.NotificationRequest;
 import org.tokkom.model.Notification;
 import org.tokkom.repository.NotificationRepository;
-import org.tokkom.service.NotificationConsumer;
 
 @SpringBootApplication
 @EnableEurekaClient
@@ -30,7 +28,9 @@ public class NotificationServerApplication {
         Notification notification = Notification.builder()
                 .message(notificationRequest.getMessage())
                 .serviceName(notificationRequest.getServiceName())
-                .createdAt(notificationRequest.getCreatedAt()).build();
+                .createdAt(notificationRequest.getCreatedAt())
+                .isExpired(0)
+                .build();
         notificationRepository.save(notification);
     }
 }
