@@ -1,6 +1,6 @@
-package org.tokkom.order;
+package org.tokkom.order.constant;
 
 public class AppConstants {
-    public static final String TOPIC_NAME = "notification-service";
-    public static final String GROUP_ID = "group_id";
+    public static final String TOPIC_NAME = "notificationTopic";
+    public static final String GROUP_ID = "notificationId";
 }

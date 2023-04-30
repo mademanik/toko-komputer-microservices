@@ -53,7 +53,7 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductResponse> createProduct(@RequestParam("product") String product, @RequestParam("thumbnail") MultipartFile thumbnail, @RequestParam("images") MultipartFile[] images) {
+    public ResponseEntity<ProductResponse> createProduct(@RequestPart("product") String product, @RequestPart("thumbnail") MultipartFile thumbnail, @RequestPart("images") MultipartFile[] images) {
         ProductRequest productRequest = new ProductRequest();
 
         try {
@@ -89,20 +89,14 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> updateProductById(@PathVariable("id") String id, @RequestBody ProductRequest productRequest) {
+    public ResponseEntity<ProductResponse> updateProductById(@PathVariable("id") String id, @RequestPart("product") String product, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "images", required = false) List<MultipartFile> images) {
+        ProductRequest productRequest = new ProductRequest();
+
         try {
-            Product product = productService.updateProduct(id, productRequest);
-            ProductResponse productResponse = ProductResponse.builder()
-                    .id(product.getId())
-                    .title(product.getTitle())
-                    .description(product.getDescription())
-                    .price(product.getPrice())
-                    .stock(product.getStock())
-                    .brand(product.getBrand())
-                    .category(product.getCategory())
-                    .thumbnail(product.getThumbnail())
-                    .images(product.getImages())
-                    .build();
+            ObjectMapper objectMapper = new ObjectMapper();
+            productRequest = objectMapper.readValue(product, ProductRequest.class);
+
+            ProductResponse productResponse = productService.updateProduct(id, productRequest, thumbnail, images);
 
             return new ResponseEntity<>(productResponse, HttpStatus.OK);
         } catch (Exception e) {

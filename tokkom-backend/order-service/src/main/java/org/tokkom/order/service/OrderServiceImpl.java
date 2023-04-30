@@ -4,15 +4,20 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.tokkom.order.constant.AppConstants;
+import org.tokkom.order.dto.request.NotificationRequest;
 import org.tokkom.order.dto.request.OrderRequest;
 import org.tokkom.order.dto.response.OrderResponse;
 import org.tokkom.order.dto.response.ProductStockResponse;
 import org.tokkom.order.model.Order;
 import org.tokkom.order.repository.OrderRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -30,6 +35,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private WebClient.Builder webClientBuilder;
+
+    @Autowired
+    private KafkaTemplate<String, NotificationRequest> kafkaTemplate;
 
     @Override
     @Transactional
@@ -52,6 +60,16 @@ public class OrderServiceImpl implements OrderService {
                 .build();
         orderRepository.save(order);
         log.info("Order : {} is successfully saved", order.getId());
+
+        NotificationRequest notificationRequest = NotificationRequest.builder()
+                .message("New incoming order with product title: " + order.getProductTitle() + " and quantity: " + order.getProductQty().toString())
+                .serviceName("order-service")
+                .createdAt(new Date())
+                .build();
+
+        //send notification via kafka producers
+        log.info("Send order detail to kafka: " + notificationRequest.toString());
+        kafkaTemplate.send(AppConstants.TOPIC_NAME, notificationRequest);
 
         return mapToOrderResponse(order);
     }

@@ -9,12 +9,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
@@ -34,6 +38,7 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
+    @CacheEvict(value = { "products", "product_title", "product_category", "product", "product_stock" }, allEntries = true)
     public ProductResponse createProduct(ProductRequest productRequest, MultipartFile thumbnail, MultipartFile[] images) {
         Long getDateName = new Date().getTime();
 
@@ -97,6 +102,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Resource load(String id, String filename) {
+        log.info("Request Product Download from server with id {}", id);
         try {
             Optional<Product> product = productRepository.findById(id);
             Path root = Paths.get(product.get().getUrl());
@@ -109,12 +115,14 @@ public class ProductServiceImpl implements ProductService {
             } else {
                 throw new RuntimeException("Could not read the file!");
             }
+
         } catch (MalformedURLException e) {
             throw new RuntimeException("Error: " + e.getMessage());
         }
     }
 
     @Override
+    @Cacheable(value = "products")
     public List<ProductResponse> getAllProducts() {
         List<Product> products = productRepository.findAll();
         log.info("getAllProducts successfully retrieved");
@@ -122,6 +130,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(value = "product_title", key = "#title")
     public List<ProductResponse> getAllProductsByTitle(String title) {
         List<Product> products = productRepository.findByTitleContaining(title);
         log.info("getAllProductsByTitle: {} successfully retrieved", title);
@@ -129,6 +138,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(value = "product_category", key = "#category")
     public List<ProductResponse> getAllProductsByCategory(String category) {
         List<Product> products = productRepository.findByCategoryContaining(category);
         log.info("getAllProductsByCategory: {} successfully retrieved", category);
@@ -136,6 +146,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(value = "product", key = "#id")
     public Optional<ProductResponse> getProductById(String id) {
         Optional<Product> product = productRepository.findById(id);
         log.info("getProductById: {} successfully retrieved", id);
@@ -143,12 +154,26 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(value = { "products", "product_title", "product_category", "product", "product_stock" }, allEntries = true)
     public void deleteProductById(String id) {
-        productRepository.deleteById(id);
-        log.info("Product with id: {} is successfully deleted", id);
+        //get url file directory
+        Optional<Product> product = productRepository.findById(id);
+        Path root = Paths.get(product.get().getUrl());
+
+        try {
+            //delete all files inside directory
+            FileSystemUtils.deleteRecursively(root.toFile());
+            //delete product from database
+            productRepository.deleteById(id);
+            log.info("Product with id: {} is successfully deleted", id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.warn("Failed Delete Product with id: {}", id);
+        }
     }
 
     @Override
+    @Cacheable(value = "product_stock", key = "#id")
     public ProductStockRequest getProductStock(String id) {
         ProductStockRequest productStockRequest = productRepository.findProductStockById(id);
         log.info("getProductStock: {} successfully retrieved", id);
@@ -156,6 +181,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @CacheEvict(value = { "products", "product_title", "product_category", "product", "product_stock" }, allEntries = true)
     public Boolean updateProductStock(String id, Double currentStock, Double reqStock) {
         Optional<Product> productData = productRepository.findById(id);
 
@@ -174,8 +200,93 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product updateProduct(String id, ProductRequest productRequest) {
+    @CacheEvict(value = { "products", "product_title", "product_category", "product", "product_stock" }, allEntries = true)
+    public ProductResponse updateProduct(String id, ProductRequest productRequest, MultipartFile thumbnail, List<MultipartFile> images) {
         Optional<Product> productData = productRepository.findById(id);
+        String productUrl = productData.get().getUrl();
+        String newFileName = "";
+        String getDirectoryName = productUrl.substring(productUrl.lastIndexOf("/") + 1);
+        Long getDateName = new Date().getTime();
+
+        System.out.println("images count : " + images.size());
+
+        List<String> imageNames = new ArrayList<>();
+
+        if (!thumbnail.isEmpty()) {
+            Path file = Paths.get(productUrl + "/" + productData.get().getThumbnail());
+            try {
+                boolean result = Files.deleteIfExists(file);
+                if (result) {
+                    log.info("Thumbnail is successfully deleted!");
+                } else {
+                    log.warn("Sorry, unable to delete thumbnail");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            //rename thumbnail
+            String getFileName = FilenameUtils.removeExtension(thumbnail.getOriginalFilename());
+            String getFileExt = FilenameUtils.getExtension(thumbnail.getOriginalFilename());
+            newFileName = getFileName + getDateName + "_thumb." + getFileExt;
+
+            String setRootPath = fileUploadRoot + "/" + getDirectoryName;
+
+            //upload thumbnail
+            try {
+                Path root = Paths.get(setRootPath);
+                Files.copy(thumbnail.getInputStream(), root.resolve(newFileName));
+            } catch (IOException e) {
+                if (e instanceof FileAlreadyExistsException) {
+                    throw new RuntimeException("A thumbnail of that name already exists.");
+                }
+                throw new RuntimeException(e.getMessage());
+            }
+        }
+
+        if (!images.get(0).isEmpty()) {
+            //delete all existing images
+            productData.get().getImages().forEach(image -> {
+                        Path imgFile = Paths.get(productUrl + "/" + image);
+                        try {
+                            boolean result = Files.deleteIfExists(imgFile);
+                            if (result) {
+                                log.info("Images {} is successfully deleted!", image);
+                            } else {
+                                log.warn("Sorry, unable to delete images {}", image);
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+            );
+
+            //upload new updates images
+            images.forEach(image -> {
+                        //rename images
+                        String getImageName = FilenameUtils.removeExtension(image.getOriginalFilename());
+                        String getImageExt = FilenameUtils.getExtension(image.getOriginalFilename());
+                        String newImageName = getImageName + getDateName + "." + getImageExt;
+
+                        String setRootPath = fileUploadRoot + "/" + getDirectoryName;
+
+                        imageNames.add(newImageName);
+
+                        try {
+                            Path rootImages = Paths.get(setRootPath);
+                            Files.copy(image.getInputStream(), rootImages.resolve(newImageName));
+                        } catch (IOException e) {
+                            if (e instanceof FileAlreadyExistsException) {
+                                throw new RuntimeException("A Image of that name already exists.");
+                            }
+                            throw new RuntimeException(e.getMessage());
+                        }
+                    }
+            );
+
+
+        }
+
         if (productData.isPresent()) {
             Product product = productData.get();
             product.setTitle(productRequest.getTitle());
@@ -185,8 +296,17 @@ public class ProductServiceImpl implements ProductService {
             product.setBrand(productRequest.getBrand());
             product.setCategory(productRequest.getCategory());
 
+            if (!thumbnail.isEmpty()) {
+                product.setThumbnail(newFileName);
+            }
+
+            if (!images.get(0).isEmpty()) {
+                product.setImages(imageNames);
+            }
+
             log.info("Product with id: {} is successfully updated", id);
-            return productRepository.save(product);
+            productRepository.save(product);
+            return mapToProductResponse(product);
         } else {
             return null;
         }

@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.core.io.Resource;
 
-@Service
 public interface ProductService {
     public ProductResponse createProduct(ProductRequest productRequest, MultipartFile thumbnail, MultipartFile[] images);
 
@@ -30,5 +29,5 @@ public interface ProductService {
 
     public Boolean updateProductStock(String id, Double currentStock, Double reqStock);
 
-    public Product updateProduct(String id, ProductRequest product);
+    public ProductResponse updateProduct(String id, ProductRequest productRequest, MultipartFile thumbnail, List<MultipartFile> images);
 }
