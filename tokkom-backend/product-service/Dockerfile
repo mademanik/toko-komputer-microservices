@@ -1,5 +1,5 @@
 FROM openjdk:17
 
-COPY target/*.jar order-service.jar
+COPY target/*.jar product-service-tokkom.jar
 
-ENTRYPOINT ["java","-jar","/order-service.jar"]
+ENTRYPOINT ["java","-jar","/product-service-tokkom.jar"]
