@@ -13,6 +13,8 @@ services:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: tokkom_order_db
     restart: always
+    networks:
+      - tokkom
 
   ##Postgres Docker Compose Config
   postgres-notification-service:
@@ -28,6 +30,8 @@ services:
       POSTGRES_PASSWORD: postgres
       PGDATA: /data/postgres
     restart: always
+    networks:
+      - tokkom
 
   ## Mongo Docker Compose Config
   mongo-product-service:
@@ -38,6 +42,8 @@ services:
     ports:
       - "27017:27017"
     restart: always
+    networks:
+      - tokkom
 
   ## Zipkin Docker Compose Config
   zipkin-tokkom:
@@ -46,6 +52,8 @@ services:
     ports:
       - "9411:9411"
     restart: always
+    networks:
+      - tokkom
 
   ## Redis Docker Compose Config
   redis-tokkom:
@@ -54,6 +62,8 @@ services:
     ports:
       - "6379:6379"
     restart: always
+    networks:
+      - tokkom
 
   zookeeper-tokkom:
     container_name: zookeeper-tokkom
@@ -63,6 +73,8 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - tokkom
 
   kafka-broker:
     container_name: kafka-broker
@@ -79,6 +91,54 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    networks:
+      - tokkom
+
+  elasticsearch:
+    image: elasticsearch:7.14.1
+    container_name: elasticsearch
+    environment:
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.type=single-node"
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - tokkom
+
+  kibana:
+    image: kibana:7.14.1
+    container_name: kibana
+    ports:
+      - "5601:5601"
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: '["http://elasticsearch:9200"]'
+    depends_on:
+      - elasticsearch
+    networks:
+      - tokkom
+
+  logstash:
+    image: logstash:7.14.1
+    container_name: logstash
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5044:5044"
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
+      - "9600:9600"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+      - elasticsearch
+    networks:
+      - tokkom
 
   ## Eureka Server
   discovery-service:
@@ -94,6 +154,8 @@ services:
             }'
     depends_on:
       - zipkin-tokkom
+    networks:
+      - tokkom
 
   ## Gateway Server
   gateway-service:
@@ -111,6 +173,8 @@ services:
     depends_on:
       - zipkin-tokkom
       - discovery-service
+    networks:
+      - tokkom
 
   ## Notification Server
   notification-service:
@@ -123,6 +187,7 @@ services:
               "spring.datasource.username" : "postgres",
               "spring.datasource.password"  : "postgres",
               "spring.jpa.hibernate.ddl-auto"  : "update",
+              "server.port"  : "0",
               "eureka.client.serviceUrl.defaultZone"  : "http://eureka:password@discovery-service:8761/eureka",
               "spring.zipkin.base-url"  : "http://zipkin-tokkom:9411",
               "spring.kafka.bootstrap-servers"  : "kafka-broker:29092"
@@ -133,6 +198,8 @@ services:
       - kafka-broker
       - gateway-service
       - postgres-notification-service
+    networks:
+      - tokkom
 
   ## Order Server
   order-service:
@@ -146,7 +213,7 @@ services:
               "spring.datasource.password"  : "root",
               "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
               "spring.jpa.hibernate.ddl-auto" : "update",
-              "server.port"  : "8080",
+              "server.port"  : "0",
               "spring.zipkin.base-url"  : "http://zipkin-tokkom:9411",
               "eureka.client.serviceUrl.defaultZone"  : "http://eureka:password@discovery-service:8761/eureka",
               "spring.kafka.bootstrap-servers"  : "kafka-broker:29092",
@@ -158,6 +225,8 @@ services:
       - kafka-broker
       - gateway-service
       - mysql-order-service
+    networks:
+      - tokkom
 
   ## Product Server
   product-service:
@@ -169,15 +238,28 @@ services:
               "spring.data.mongodb.host"  : "mongo-product-service",
               "spring.data.mongodb.port" : "27017",
               "spring.data.mongodb.database"  : "tokkom_product_db",
-              "server.port"  : "8080",
+              "server.port"  : "0",
               "spring.zipkin.base-url"  : "http://zipkin-tokkom:9411",
               "eureka.client.serviceUrl.defaultZone"  : "http://eureka:password@discovery-service:8761/eureka",
               "spring.cache.type"  : "redis",
               "spring.redis.host"  : "redis-tokkom",
               "spring.redis.port"  : "6379"
             }'
+    networks:
+      - tokkom
     depends_on:
       - zipkin-tokkom
       - discovery-service
       - gateway-service
       - mongo-product-service
+      - elasticsearch
+      - kibana
+      - logstash
+
+networks:
+  tokkom:
+    driver: bridge
+
+volumes:
+  elasticsearch_data:
+    driver: local

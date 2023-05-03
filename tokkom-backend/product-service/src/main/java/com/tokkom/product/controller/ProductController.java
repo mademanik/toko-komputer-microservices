@@ -1,7 +1,6 @@
 package com.tokkom.product.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.net.HttpHeaders;
 import com.tokkom.product.dto.request.ProductRequest;
 import com.tokkom.product.dto.request.ProductStockRequest;
 import com.tokkom.product.dto.response.ProductResponse;
@@ -10,6 +9,7 @@ import com.tokkom.product.model.Product;
 import com.tokkom.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

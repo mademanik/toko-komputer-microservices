@@ -39,6 +39,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @CacheEvict(value = { "products", "product_title", "product_category", "product", "product_stock" }, allEntries = true)
+    public void cacheInit() {
+        log.info("Cache init successfully running...");
+    }
+
+    @Override
+    @CacheEvict(value = { "products", "product_title", "product_category", "product", "product_stock" }, allEntries = true)
     public ProductResponse createProduct(ProductRequest productRequest, MultipartFile thumbnail, MultipartFile[] images) {
         Long getDateName = new Date().getTime();
 

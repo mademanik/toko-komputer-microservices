@@ -12,6 +12,8 @@ import java.util.Optional;
 import org.springframework.core.io.Resource;
 
 public interface ProductService {
+
+    public void cacheInit();
     public ProductResponse createProduct(ProductRequest productRequest, MultipartFile thumbnail, MultipartFile[] images);
 
     public Resource load(String id, String filename);
