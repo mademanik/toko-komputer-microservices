@@ -10,7 +10,6 @@ import org.tokkom.service.NotificationConsumer;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/tokkom/api/notification")
 @Slf4j

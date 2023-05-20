@@ -1,0 +1,78 @@
+<h2 mat-dialog-title>Show Product</h2>
+<mat-dialog-content class="mat-typography" *ngIf="row">
+  <mat-form-field class="form-first" appearance="outline">
+    <mat-label>Title</mat-label>
+    <input
+      matInput
+      placeholder="Product Title"
+      value="{{ row.title }}"
+      readonly
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Category</mat-label>
+    <input
+      matInput
+      placeholder="Product Category"
+      value="{{ row.category }}"
+      readonly
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Brand</mat-label>
+    <input
+      matInput
+      placeholder="Product Brand"
+      value="{{ row.brand }}"
+      readonly
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Price</mat-label>
+    <input
+      matInput
+      placeholder="Product Price"
+      value="{{ row.price }}"
+      readonly
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Stock</mat-label>
+    <input
+      matInput
+      placeholder="Product Stock"
+      value="{{ row.stock }}"
+      readonly
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea
+      placeholder="Input Product Description"
+      matInput
+      value="{{ row.description }}"
+      readonly
+    ></textarea>
+  </mat-form-field>
+
+  <div>
+    <h3>Thumbnail</h3>
+    <img *ngIf="thumbnail" [src]="thumbnail" class="preview" />
+  </div>
+
+  <div>
+    <h3>Images</h3>
+    <img *ngFor="let image of images" [src]="image" class="preview" />
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="accent" mat-dialog-close>Cancel</button>
+  <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>
+    Submit
+  </button>
+</mat-dialog-actions>

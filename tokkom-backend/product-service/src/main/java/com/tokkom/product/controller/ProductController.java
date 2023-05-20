@@ -5,7 +5,6 @@ import com.tokkom.product.dto.request.ProductRequest;
 import com.tokkom.product.dto.request.ProductStockRequest;
 import com.tokkom.product.dto.response.ProductResponse;
 import com.tokkom.product.dto.response.ProductStockResponse;
-import com.tokkom.product.model.Product;
 import com.tokkom.product.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/tokkom/api/product")
 @Slf4j
@@ -79,17 +77,17 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProductById(@PathVariable("id") String productId) {
+    public ResponseEntity<HttpStatus> deleteProductById(@PathVariable("id") String productId) {
         try {
             productService.deleteProductById(productId);
-            return new ResponseEntity<>("Blog ID: " + productId + " was successfully deleted", HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductResponse> updateProductById(@PathVariable("id") String id, @RequestPart("product") String product, @RequestPart(value = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "images", required = false) List<MultipartFile> images) {
+    public ResponseEntity<ProductResponse> updateProductById(@PathVariable("id") String id, @RequestPart("product") String product, @RequestPart(name = "thumbnail", required = false) MultipartFile thumbnail, @RequestPart(value = "images", required = false) List<MultipartFile> images) {
         ProductRequest productRequest = new ProductRequest();
 
         try {
@@ -100,7 +98,7 @@ public class ProductController {
 
             return new ResponseEntity<>(productResponse, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

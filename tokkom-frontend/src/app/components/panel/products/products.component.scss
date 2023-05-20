@@ -78,8 +78,18 @@ table {
   width: 100%;
 }
 
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td,
+th {
+  width: 10%;
+}
+
 .table-container {
-  height: 400px;
+  height: 300px;
   max-width: 100%;
   overflow: auto;
 }

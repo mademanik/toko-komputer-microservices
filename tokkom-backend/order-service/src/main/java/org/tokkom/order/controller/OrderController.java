@@ -12,7 +12,6 @@ import org.tokkom.order.dto.response.OrderResponse;
 import org.tokkom.order.dto.response.ProductStockResponse;
 import org.tokkom.order.service.OrderService;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/tokkom/api/order")
 @Slf4j

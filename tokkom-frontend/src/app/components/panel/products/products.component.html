@@ -14,7 +14,7 @@
       <button
         class="btn-add mat-elevation-z8"
         mat-raised-button
-        (click)="openDialog()"
+        (click)="addDialog()"
       >
         <i class="bx bx-plus-circle"></i>
         <span class="text">Add Product</span>
@@ -24,43 +24,63 @@
       <mat-card>
         <mat-card-content>
           <h3 class="card-title">Products List</h3>
+          <mat-form-field>
+            <mat-label>Search...</mat-label>
+            <input
+              matInput
+              (keyup)="applyFilter($event)"
+              placeholder="Ex. Headset"
+              #input
+            />
+          </mat-form-field>
           <div class="table-container mat-elevation-z0">
-            <table mat-table [dataSource]="dataSource">
-              <!-- Position Column -->
-              <ng-container matColumnDef="no">
-                <th mat-header-cell *matHeaderCellDef>No.</th>
+            <table mat-table [dataSource]="dataSource" matSort>
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
                 <td mat-cell *matCellDef="let element">
-                  {{ element.no }}
+                  {{ element.title }}
                 </td>
               </ng-container>
 
-              <!-- Name Column -->
-              <ng-container matColumnDef="title">
-                <th mat-header-cell *matHeaderCellDef>Title</th>
-                <td mat-cell *matCellDef="let element">{{ element.title }}</td>
-              </ng-container>
-
-              <!-- Weight Column -->
               <ng-container matColumnDef="brand">
-                <th mat-header-cell *matHeaderCellDef>Brand</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Brand</th>
                 <td mat-cell *matCellDef="let element">{{ element.brand }}</td>
               </ng-container>
 
               <ng-container matColumnDef="category">
-                <th mat-header-cell *matHeaderCellDef>Category</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Category
+                </th>
                 <td mat-cell *matCellDef="let element">
                   {{ element.category }}
                 </td>
               </ng-container>
 
+              <ng-container matColumnDef="stock">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Stock</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.stock }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="price">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.price | currency : "Rp. " : "symbol" : "3.0" }}
+                </td>
+              </ng-container>
+
               <ng-container matColumnDef="action">
-                <th mat-header-cell *matHeaderCellDef>Action</th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Action
+                </th>
                 <td mat-cell *matCellDef="let element">
                   <button
                     class="btn-icon mat-elevation-z0"
                     mat-mini-fab
                     color="primary"
                     aria-label="Show"
+                    (click)="showDialog(element.id)"
                   >
                     <mat-icon>visibility</mat-icon>
                   </button>
@@ -68,10 +88,20 @@
                   <button
                     class="btn-icon mat-elevation-z0"
                     mat-mini-fab
+                    color="accent"
+                    aria-label="Show"
+                    (click)="editDialog(element.id)"
+                  >
+                    <mat-icon>mode</mat-icon>
+                  </button>
+                  <button
+                    class="btn-icon mat-elevation-z0"
+                    mat-mini-fab
                     color="warn"
                     aria-label="Show"
+                    (click)="deleteDialog(element.id)"
                   >
-                    <mat-icon>assignment</mat-icon>
+                    <mat-icon>delete</mat-icon>
                   </button>
                 </td>
               </ng-container>

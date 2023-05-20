@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { Product } from 'src/app/models/product.model';
 
 @Injectable({
   providedIn: 'root',
@@ -7,54 +9,48 @@ import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 export class ProductService {
   constructor(private _httpClient: HttpClient) {}
 
-  private baseUrl = "http://localhost:8080";
-
-  // getDataBlogs() {
-  //   return this._httpClient.get<any>(`${this.baseUrl}/api/blogs`);
-  // }
+  private baseUrl = 'http://localhost:8080';
 
   createProduct(formData: FormData) {
-    const req = new HttpRequest("POST", `${this.baseUrl}/tokkom/api/product/`, formData, {
-      reportProgress: true,
-      responseType: "json",
-    });
+    const req = new HttpRequest(
+      'POST',
+      `${this.baseUrl}/tokkom/api/product/`,
+      formData,
+      {
+        reportProgress: true,
+        responseType: 'json',
+      }
+    );
 
     return this._httpClient.request(req);
   }
 
-  getDataProducts() {
-    return this._httpClient.get<any>(`${this.baseUrl}/tokkom/api/product/`);
+  getDataProducts(): Observable<Product[]> {
+    return this._httpClient.get<Product[]>(
+      `${this.baseUrl}/tokkom/api/product/`
+    );
   }
 
-  getProductById(id: String) {
-    return this._httpClient.get<any>(
+  getProductById(id: any): Observable<Product> {
+    return this._httpClient.get<Product>(
       `${this.baseUrl}/tokkom/api/product/${id}`
     );
   }
 
-  getProductContainsTitle(title: String) {
-    return this._httpClient.get<any>(
-      `${this.baseUrl}/tokkom/api/product?title=${title}`
-    );
-  }
-
-  getProductContainsCategory(category: String) {
-    return this._httpClient.get<any>(
-      `${this.baseUrl}/tokkom/api/product?category=${category}`
-    );
-  }
-
-  deleteProductById(id: String) {
-    return this._httpClient.delete<any>(
-      `${this.baseUrl}:8080/tokkom/api/product/${id}`
-    );
+  deleteProductById(id: any): Observable<any> {
+    return this._httpClient.delete(`${this.baseUrl}/tokkom/api/product/${id}`);
   }
 
   updateProduct(id: String, formData: FormData) {
-    const req = new HttpRequest("PUT", `${this.baseUrl}/tokkom/api/product/${id}`, formData, {
-      reportProgress: true,
-      responseType: "json",
-    });
+    const req = new HttpRequest(
+      'PUT',
+      `${this.baseUrl}/tokkom/api/product/${id}`,
+      formData,
+      {
+        reportProgress: true,
+        responseType: 'json',
+      }
+    );
 
     return this._httpClient.request(req);
   }

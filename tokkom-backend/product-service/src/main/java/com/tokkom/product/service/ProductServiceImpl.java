@@ -38,13 +38,13 @@ public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
 
     @Override
-    @CacheEvict(value = { "products", "product_title", "product_category", "product", "product_stock" }, allEntries = true)
+    @CacheEvict(value = {"products", "product_title", "product_category", "product", "product_stock"}, allEntries = true)
     public void cacheInit() {
         log.info("Cache init successfully running...");
     }
 
     @Override
-    @CacheEvict(value = { "products", "product_title", "product_category", "product", "product_stock" }, allEntries = true)
+    @CacheEvict(value = {"products", "product_title", "product_category", "product", "product_stock"}, allEntries = true)
     public ProductResponse createProduct(ProductRequest productRequest, MultipartFile thumbnail, MultipartFile[] images) {
         Long getDateName = new Date().getTime();
 
@@ -160,7 +160,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @CacheEvict(value = { "products", "product_title", "product_category", "product", "product_stock" }, allEntries = true)
+    @CacheEvict(value = {"products", "product_title", "product_category", "product", "product_stock"}, allEntries = true)
     public void deleteProductById(String id) {
         //get url file directory
         Optional<Product> product = productRepository.findById(id);
@@ -187,7 +187,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @CacheEvict(value = { "products", "product_title", "product_category", "product", "product_stock" }, allEntries = true)
+    @CacheEvict(value = {"products", "product_title", "product_category", "product", "product_stock"}, allEntries = true)
     public Boolean updateProductStock(String id, Double currentStock, Double reqStock) {
         Optional<Product> productData = productRepository.findById(id);
 
@@ -206,19 +206,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @CacheEvict(value = { "products", "product_title", "product_category", "product", "product_stock" }, allEntries = true)
+    @CacheEvict(value = {"products", "product_title", "product_category", "product", "product_stock"}, allEntries = true)
     public ProductResponse updateProduct(String id, ProductRequest productRequest, MultipartFile thumbnail, List<MultipartFile> images) {
+
         Optional<Product> productData = productRepository.findById(id);
         String productUrl = productData.get().getUrl();
         String newFileName = "";
         String getDirectoryName = productUrl.substring(productUrl.lastIndexOf("/") + 1);
         Long getDateName = new Date().getTime();
 
-        System.out.println("images count : " + images.size());
-
         List<String> imageNames = new ArrayList<>();
 
-        if (!thumbnail.isEmpty()) {
+        if (thumbnail != null) {
             Path file = Paths.get(productUrl + "/" + productData.get().getThumbnail());
             try {
                 boolean result = Files.deleteIfExists(file);
@@ -250,7 +249,8 @@ public class ProductServiceImpl implements ProductService {
             }
         }
 
-        if (!images.get(0).isEmpty()) {
+//            if (images.get(0) != null) {
+        if (images != null) {
             //delete all existing images
             productData.get().getImages().forEach(image -> {
                         Path imgFile = Paths.get(productUrl + "/" + image);
@@ -289,8 +289,6 @@ public class ProductServiceImpl implements ProductService {
                         }
                     }
             );
-
-
         }
 
         if (productData.isPresent()) {
@@ -302,11 +300,11 @@ public class ProductServiceImpl implements ProductService {
             product.setBrand(productRequest.getBrand());
             product.setCategory(productRequest.getCategory());
 
-            if (!thumbnail.isEmpty()) {
+            if (thumbnail != null) {
                 product.setThumbnail(newFileName);
             }
 
-            if (!images.get(0).isEmpty()) {
+            if (images != null) {
                 product.setImages(imageNames);
             }
 

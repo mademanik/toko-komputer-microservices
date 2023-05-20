@@ -1,22 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ProductService } from 'src/app/services/product/product.service';
 import {
   FormBuilder,
   FormGroup,
   FormControl,
   Validators,
 } from '@angular/forms';
-import { ProductService } from 'src/app/services/product/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-add-product',
-  templateUrl: './add-product.component.html',
-  styleUrls: ['./add-product.component.scss'],
+  selector: 'app-edit-product',
+  templateUrl: './edit-product.component.html',
+  styleUrls: ['./edit-product.component.scss'],
 })
-export class AddProductComponent implements OnInit {
-  productForm!: FormGroup;
+export class EditProductComponent implements OnInit {
+  productForm: FormGroup = this.formBuilder.group({
+    id: ['', Validators.required],
+    title: ['', Validators.required],
+    description: ['', Validators.required],
+    price: ['', Validators.required],
+    stock: ['', Validators.required],
+    brand: ['', Validators.required],
+    category: ['', Validators.required],
+    thumbnail: [''],
+    images: [''],
+  });
 
   // single image
   currentFile?: File;
@@ -31,24 +40,52 @@ export class AddProductComponent implements OnInit {
 
   singleFile: string = '';
   multiFiles: string[] = [];
+
+  downloadUrl: string = 'http://localhost:8080/tokkom/api/product/download';
+
   constructor(
+    @Inject(MAT_DIALOG_DATA)
+    public data: { id: any },
     private formBuilder: FormBuilder,
     private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
-    public dialogRef: MatDialogRef<AddProductComponent>
+    private dialogRef: MatDialogRef<EditProductComponent>
   ) {}
 
   ngOnInit(): void {
-    this.productForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      price: ['', Validators.required],
-      stock: ['', Validators.required],
-      brand: ['', Validators.required],
-      category: ['', Validators.required],
-      thumbnail: [''],
-      images: [''],
+    this.getProductById(this.data.id);
+  }
+
+  getProductById(id: String) {
+    this.productService.getProductById(id).subscribe({
+      next: (res) => {
+        const { id, title, description, price, stock, brand, category } = res;
+
+        this.productForm.setValue({
+          id: id,
+          title: title,
+          description: description,
+          price: price,
+          stock: stock,
+          brand: brand,
+          category: category,
+          thumbnail: '',
+          images: '',
+        });
+
+        this.singlePreview = `${this.downloadUrl}/${res.id}/${res.thumbnail}`;
+        if (res.images) {
+          for (let i = 0; i < res.images.length; i++) {
+            this.multiPreview.push(
+              `${this.downloadUrl}/${res.id}/${res.images[i]}`
+            );
+          }
+        }
+      },
+      error: (err) => {
+        alert(err);
+      },
     });
   }
 
@@ -97,6 +134,7 @@ export class AddProductComponent implements OnInit {
 
   submit(): void {
     if (this.productForm.valid) {
+      const getId = this.productForm.get('id')?.value;
       const getTitle = this.productForm.get('title')?.value;
       const getDesc = this.productForm.get('description')?.value;
       const getPrice = this.productForm.get('price')?.value;
@@ -122,13 +160,17 @@ export class AddProductComponent implements OnInit {
       formData.append('thumbnail', this.singleFile);
 
       //append multi images
-      for (var i = 0; i < this.multiFiles.length; i++) {
-        formData.append('images', this.multiFiles[i]);
+      if (this.multiFiles.length === 0) {
+        //if multi images null then append empty string
+        formData.append('images', '');
+      } else {
+        for (var i = 0; i < this.multiFiles.length; i++) {
+          formData.append('images', this.multiFiles[i]);
+        }
       }
 
-      this.productService.createProduct(formData).subscribe({
+      this.productService.updateProduct(getId, formData).subscribe({
         next: (res) => {
-          // console.log(res);
           this.router.navigate(['/panel/products']);
         },
         error: (err) => {

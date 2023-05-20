@@ -12,22 +12,6 @@ mat-form-field {
   width: 100%;
 }
 
-#fileInput {
-  position: absolute;
-  cursor: pointer;
-  z-index: 10;
-  opacity: 0;
-  height: 100%;
-  left: 0px;
-  top: 0px;
-}
-
-.mat-toolbar-single-row {
-  height: auto !important;
-  background: transparent;
-  padding: 0;
-}
-
 .preview {
   max-width: 120px;
   vertical-align: middle;
