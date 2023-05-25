@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpRequest,
+  HttpEvent,
+  HttpHeaders,
+} from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -7,9 +14,23 @@ import { HttpClient, HttpRequest, HttpEvent } from '@angular/common/http';
 export class OrderService {
   constructor(private _httpClient: HttpClient) {}
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = environment.baseUrl;
 
-  createOrder(data: any) {
-    return this._httpClient.post<any>(`${this.baseUrl}/tokkom/api/order`, data);
+  private headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
+
+  createOrder(id: any, formData: FormData) {
+    const req = new HttpRequest(
+      'POST',
+      `${this.baseUrl}/tokkom/api/order/${id}`,
+      formData,
+      {
+        reportProgress: true,
+        responseType: 'json',
+      }
+    );
+
+    return this._httpClient.request(req);
   }
 }

@@ -20,12 +20,18 @@ export class DeleteProductComponent {
   ) {}
 
   deleteProduct() {
-    console.log(this.data.id);
     this.productService.deleteProductById(this.data.id).subscribe({
       next: (res) => {
-        this.router.navigate(['/panel/products']);
+        this.dialogRef.close({
+          message: 'success',
+        });
       },
-      error: (e) => console.error(e)
+      error: (err) => {
+        this.dialogRef.close({
+          message: 'error',
+        });
+        console.log(err);
+      },
     });
   }
 }

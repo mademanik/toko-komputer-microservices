@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-edit-product',
@@ -15,6 +16,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./edit-product.component.scss'],
 })
 export class EditProductComponent implements OnInit {
+  baseUrl = environment.baseUrl;
   productForm: FormGroup = this.formBuilder.group({
     id: ['', Validators.required],
     title: ['', Validators.required],
@@ -41,7 +43,7 @@ export class EditProductComponent implements OnInit {
   singleFile: string = '';
   multiFiles: string[] = [];
 
-  downloadUrl: string = 'http://localhost:8080/tokkom/api/product/download';
+  downloadUrl: string = `${this.baseUrl}/tokkom/api/product/download`;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -171,14 +173,21 @@ export class EditProductComponent implements OnInit {
 
       this.productService.updateProduct(getId, formData).subscribe({
         next: (res) => {
-          this.router.navigate(['/panel/products']);
+          this.dialogRef.close({
+            message: 'success',
+          });
         },
         error: (err) => {
+          this.dialogRef.close({
+            message: 'error',
+          });
           console.log(err);
         },
       });
     } else {
-      console.log('Form tidak valid, beberapa form belum terisi');
+      this.dialogRef.close({
+        message: 'invalid',
+      });
     }
   }
 }

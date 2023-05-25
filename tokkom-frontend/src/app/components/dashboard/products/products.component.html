@@ -4,98 +4,38 @@
       <h3>Products</h3>
     </div>
     <ul class="product-list">
-      <li>
+      <li *ngFor="let row of rows">
         <mat-card>
           <img
+            (click)="detailDialog(row.id)"
+            style="cursor: pointer"
             mat-card-image
-            src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-            alt="Photo of a Shiba Inu"
+            src="{{ downloadUrl + '/' + row.id + '/' + row.thumbnail }}"
+            alt="{{ row.title }}"
           />
           <mat-card-content>
             <div class="body-text">
-              <a href="" class="title">Title Link</a>
-              <span class="date"
-                ><i class="bx bxs-calendar-alt"></i>23-10-2021</span
-              >
+              <a class="title cursor-link" (click)="detailDialog(row.id)">{{
+                truncateTitle(row.title, 20)
+              }}</a>
               <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
-                at.
-                <a href="#" class="read-more">Read more</a>
+                {{ truncateTitle(row.description, 60) }}
+                <a
+                  class="read-more cursor-link cursor-block"
+                  (click)="detailDialog(row.id)"
+                  >Read more</a
+                >
               </p>
             </div>
           </mat-card-content>
           <mat-card-actions>
             <button
               mat-raised-button
-              (click)="openDialog()"
+              (click)="orderDialog(row.id)"
               color="primary"
               style="width: 100%"
             >
-              Buy Product
-            </button>
-          </mat-card-actions>
-        </mat-card>
-      </li>
-      <li>
-        <mat-card class="mat-elevation-z10">
-          <img
-            mat-card-image
-            src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-            alt="Photo of a Shiba Inu"
-          />
-          <mat-card-content>
-            <div class="body-text">
-              <a href="" class="title">Title Link</a>
-              <span class="date"
-                ><i class="bx bxs-calendar-alt"></i>23-10-2021</span
-              >
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
-                at.
-                <a href="#" class="read-more">Read more</a>
-              </p>
-            </div>
-          </mat-card-content>
-          <mat-card-actions>
-            <button
-              mat-raised-button
-              (click)="openDialog()"
-              color="primary"
-              style="width: 100%"
-            >
-              Buy Product
-            </button>
-          </mat-card-actions>
-        </mat-card>
-      </li>
-      <li>
-        <mat-card>
-          <img
-            mat-card-image
-            src="https://material.angular.io/assets/img/examples/shiba2.jpg"
-            alt="Photo of a Shiba Inu"
-          />
-          <mat-card-content>
-            <div class="body-text">
-              <a href="" class="title">Title Link</a>
-              <span class="date"
-                ><i class="bx bxs-calendar-alt"></i>23-10-2021</span
-              >
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum,
-                at.
-                <a href="#" class="read-more">Read more</a>
-              </p>
-            </div>
-          </mat-card-content>
-          <mat-card-actions>
-            <button
-              mat-raised-button
-              (click)="openDialog()"
-              color="primary"
-              style="width: 100%"
-            >
-              Buy Product
+              {{ buyProduct }}
             </button>
           </mat-card-actions>
         </mat-card>

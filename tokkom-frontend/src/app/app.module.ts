@@ -1,14 +1,14 @@
+// Angular Modules
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 import { HttpClientModule } from '@angular/common/http';
-import { PanelModule } from './components/panel/panel.module';
-import { AppComponent } from './app.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+// Routing module
+import { AppRoutingModule } from './app-routing.module';
+
+// Angular Material Modules
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,11 +29,19 @@ import { NavbarComponent } from './components/dashboard/navbar/navbar.component'
 import { FooterComponent } from './components/dashboard/footer/footer.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
-
 import { MatDialogModule } from '@angular/material/dialog';
-import { FormProductComponent } from './components/dashboard/products/form-product/form-product.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+
+//Panel module
+import { PanelModule } from './components/panel/panel.module';
+
+//Components
+import { AppComponent } from './app.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { FormProductComponent } from './components/dashboard/products/form-product/form-product.component';
 import { ServicesComponent } from './components/dashboard/services/services.component';
+import { DetailProductComponent } from './components/dashboard/products/detail-product/detail-product.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +53,7 @@ import { ServicesComponent } from './components/dashboard/services/services.comp
     FooterComponent,
     FormProductComponent,
     ServicesComponent,
+    DetailProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +61,8 @@ import { ServicesComponent } from './components/dashboard/services/services.comp
     BrowserAnimationsModule,
     HttpClientModule,
     PanelModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatToolbarModule,
     MatSidenavModule,
     MatButtonModule,
@@ -70,6 +81,7 @@ import { ServicesComponent } from './components/dashboard/services/services.comp
     MatFormFieldModule,
     MatTableModule,
     MatPaginatorModule,
+    MatGridListModule
   ],
   providers: [],
   bootstrap: [AppComponent],

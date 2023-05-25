@@ -17,7 +17,7 @@
 
 #products .product-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   grid-gap: 36px;
 }
 
@@ -82,4 +82,12 @@
 }
 #products .product-list li .body-text p .read-more:hover {
   color: var(--primary-shade);
+}
+
+.cursor-block {
+  display: block;
+}
+
+.cursor-link {
+  cursor: pointer;
 }

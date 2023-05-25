@@ -15,8 +15,17 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './add-product.component.html',
   styleUrls: ['./add-product.component.scss'],
 })
-export class AddProductComponent implements OnInit {
-  productForm!: FormGroup;
+export class AddProductComponent {
+  productForm: FormGroup = this.formBuilder.group({
+    title: ['', Validators.required],
+    description: ['', Validators.required],
+    price: ['', Validators.required],
+    stock: ['', Validators.required],
+    brand: ['', Validators.required],
+    category: ['', Validators.required],
+    thumbnail: ['', Validators.required],
+    images: ['', Validators.required],
+  });
 
   // single image
   currentFile?: File;
@@ -38,19 +47,6 @@ export class AddProductComponent implements OnInit {
     private router: Router,
     public dialogRef: MatDialogRef<AddProductComponent>
   ) {}
-
-  ngOnInit(): void {
-    this.productForm = this.formBuilder.group({
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      price: ['', Validators.required],
-      stock: ['', Validators.required],
-      brand: ['', Validators.required],
-      category: ['', Validators.required],
-      thumbnail: [''],
-      images: [''],
-    });
-  }
 
   // select single image
   selectFile(event: any): void {
@@ -129,14 +125,20 @@ export class AddProductComponent implements OnInit {
       this.productService.createProduct(formData).subscribe({
         next: (res) => {
           // console.log(res);
-          this.router.navigate(['/panel/products']);
+          this.dialogRef.close({
+            message: 'success',
+          });
         },
         error: (err) => {
-          console.log(err);
+          this.dialogRef.close({
+            message: 'error',
+          });
         },
       });
     } else {
-      console.log('Form tidak valid, beberapa form belum terisi');
+      this.dialogRef.close({
+        message: 'invalid',
+      });
     }
   }
 }

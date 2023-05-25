@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Product } from 'src/app/models/product.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { Product } from 'src/app/models/product.model';
 export class ProductService {
   constructor(private _httpClient: HttpClient) {}
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = environment.baseUrl;
 
   createProduct(formData: FormData) {
     const req = new HttpRequest(

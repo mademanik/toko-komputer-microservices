@@ -10,6 +10,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { MatSort } from '@angular/material/sort';
 import { Product } from 'src/app/models/product.model';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-products',
@@ -36,7 +41,8 @@ export class ProductsComponent implements AfterViewInit, OnInit {
     public dialog: MatDialog,
     private productService: ProductService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngAfterViewInit() {
@@ -76,6 +82,16 @@ export class ProductsComponent implements AfterViewInit, OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.getProducts();
+
+      if (result.message == 'success') {
+        this.openSnackbarSuccess('Success', 'Product successfully created');
+      } else if (result.message == 'error') {
+        this.openSnackbarError('Error', 'Product create Failed');
+      } else if (result.message == 'invalid') {
+        this.openSnackbarError('Error', 'Form invalid');
+      }
+
+      this.router.navigate(['/panel/products']);
     });
   }
 
@@ -100,6 +116,16 @@ export class ProductsComponent implements AfterViewInit, OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.getProducts();
+
+      if (result.message == 'success') {
+        this.openSnackbarSuccess('Success', 'Product successfully updated');
+      } else if (result.message == 'error') {
+        this.openSnackbarError('Error', 'Product create Failed');
+      } else if (result.message == 'invalid') {
+        this.openSnackbarError('Error', 'Form invalid');
+      }
+
+      this.router.navigate(['/panel/products']);
     });
   }
 
@@ -112,6 +138,34 @@ export class ProductsComponent implements AfterViewInit, OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       this.getProducts();
+
+      if (result.message == 'success') {
+        this.openSnackbarSuccess('Success', 'Product deleted successfully');
+      } else if (result.message == 'error') {
+        this.openSnackbarError('Error', 'Product create Failed');
+      } else if (result.message == 'invalid') {
+        this.openSnackbarError('Error', 'Form invalid');
+      }
+
+      this.router.navigate(['/panel/products']);
+    });
+  }
+
+  openSnackbarSuccess(title: string, message: string) {
+    this._snackBar.open(message, title, {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 3000,
+      panelClass: 'app-notification-success',
+    });
+  }
+
+  openSnackbarError(title: string, message: string) {
+    this._snackBar.open(message, title, {
+      horizontalPosition: 'right',
+      verticalPosition: 'top',
+      duration: 3000,
+      panelClass: 'app-notification-error',
     });
   }
 }

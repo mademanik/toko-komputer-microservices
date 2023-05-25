@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductService } from 'src/app/services/product/product.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-show-product',
@@ -8,10 +9,11 @@ import { ProductService } from 'src/app/services/product/product.service';
   styleUrls: ['./show-product.component.scss'],
 })
 export class ShowProductComponent implements OnInit {
+  baseUrl = environment.baseUrl;
   row: any;
   thumbnail: string = '';
   images: string[] = [];
-  downloadUrl: string = 'http://localhost:8080/tokkom/api/product/download';
+  downloadUrl: string = `${this.baseUrl}/tokkom/api/product/download`;
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
