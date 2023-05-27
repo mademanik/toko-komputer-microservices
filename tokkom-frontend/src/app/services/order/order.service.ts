@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Observable } from 'rxjs';
+import { Order } from 'src/app/models/order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -32,5 +33,15 @@ export class OrderService {
     );
 
     return this._httpClient.request(req);
+  }
+
+  getAllOrders(): Observable<Order[]> {
+    return this._httpClient.get<Order[]>(`${this.baseUrl}/tokkom/api/order/`);
+  }
+
+  getOrderById(id: any): Observable<Order> {
+    return this._httpClient.get<Order>(
+      `${this.baseUrl}/tokkom/api/order/${id}`
+    );
   }
 }

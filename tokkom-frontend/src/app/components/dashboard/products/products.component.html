@@ -18,6 +18,9 @@
               <a class="title cursor-link" (click)="detailDialog(row.id)">{{
                 truncateTitle(row.title, 20)
               }}</a>
+              <h4 class="product-price">
+                {{ row.price | currency : "Rp. " : "symbol" : "3.0" }}
+              </h4>
               <p>
                 {{ truncateTitle(row.description, 60) }}
                 <a

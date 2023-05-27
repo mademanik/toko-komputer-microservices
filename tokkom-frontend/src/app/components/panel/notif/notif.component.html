@@ -1,0 +1,15 @@
+<div>
+  <button
+    mat-icon-button
+    [matMenuTriggerFor]="menu"
+    aria-label="Example icon-button with a menu"
+  >
+    <mat-icon matBadge="2" matBadgeColor="warn">notifications_none</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>
+      <mat-icon>new_releases</mat-icon>
+      <span>New Order : </span>
+    </button>
+  </mat-menu>
+</div>

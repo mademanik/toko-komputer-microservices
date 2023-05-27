@@ -1,5 +1,5 @@
 <form [formGroup]="orderForm" (ngSubmit)="submit()">
-  <h2 mat-dialog-title>Product Form</h2>
+  <h2 mat-dialog-title>Order Product</h2>
   <mat-dialog-content class="mat-typography">
     <mat-form-field class="invisible form-first" appearance="outline">
       <mat-label>Product Id</mat-label>
@@ -24,6 +24,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Quantity</mat-label>
       <input
+        type="number"
         matInput
         formControlName="productQty"
         placeholder="Input Product Qty"

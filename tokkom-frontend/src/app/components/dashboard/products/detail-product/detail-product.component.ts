@@ -31,6 +31,7 @@ export class DetailProductComponent implements OnInit {
       next: (res) => {
         this.row = res;
         this.thumbnail = `${this.downloadUrl}/${res.id}/${res.thumbnail}`;
+        this.images.push(this.thumbnail);
         if (res.images) {
           for (let i = 0; i < res.images.length; i++) {
             this.images.push(`${this.downloadUrl}/${res.id}/${res.images[i]}`);
@@ -41,5 +42,9 @@ export class DetailProductComponent implements OnInit {
         alert(err);
       },
     });
+  }
+
+  setThumbnail(url: string) {
+    this.thumbnail = url;
   }
 }

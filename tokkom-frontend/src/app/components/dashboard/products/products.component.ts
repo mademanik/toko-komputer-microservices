@@ -56,11 +56,11 @@ export class ProductsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.getProducts();
 
-      if (result.message == 'success') {
+      if (result?.message == 'success') {
         this.openSnackbarSuccess('Success', 'Product successfully created');
-      } else if (result.message == 'error') {
+      } else if (result?.message == 'error') {
         this.openSnackbarError('Error', 'Product create Failed');
-      } else if (result.message == 'invalid') {
+      } else if (result?.message == 'invalid') {
         this.openSnackbarError('Error', 'Form invalid');
       }
 
@@ -72,17 +72,18 @@ export class ProductsComponent implements OnInit {
     const dialogRef = this.dialog.open(DetailProductComponent, {
       width: '50%',
       position: { top: '20px' },
+      maxHeight: '90vh',
       data: { id: id },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       this.getProducts();
 
-      if (result.message == 'success') {
+      if (result?.message == 'success') {
         this.openSnackbarSuccess('Success', 'Order successfully created');
-      } else if (result.message == 'error') {
+      } else if (result?.message == 'error') {
         this.openSnackbarError('Error', 'Order create Failed');
-      } else if (result.message == 'invalid') {
+      } else if (result?.message == 'invalid') {
         this.openSnackbarError('Error', 'Form invalid');
       }
 

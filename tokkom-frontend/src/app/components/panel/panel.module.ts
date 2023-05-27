@@ -23,6 +23,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatBadgeModule } from '@angular/material/badge';
 
 // Components
 import { PanelComponent } from './panel.component';
@@ -33,6 +34,9 @@ import { AddProductComponent } from './products/add-product/add-product.componen
 import { ShowProductComponent } from './products/show-product/show-product.component';
 import { DeleteProductComponent } from './products/delete-product/delete-product.component';
 import { EditProductComponent } from './products/edit-product/edit-product.component';
+import { OrdersComponent } from './orders/orders.component';
+import { NotifComponent } from './notif/notif.component';
+import { ShowOrderComponent } from './orders/show-order/show-order.component';
 
 const routes: Routes = [
   {
@@ -42,6 +46,7 @@ const routes: Routes = [
       { path: '', component: HomeComponent },
       { path: 'home', component: HomeComponent },
       { path: 'products', component: ProductsComponent },
+      { path: 'orders', component: OrdersComponent },
     ],
   },
 ];
@@ -56,6 +61,9 @@ const routes: Routes = [
     ShowProductComponent,
     DeleteProductComponent,
     EditProductComponent,
+    OrdersComponent,
+    NotifComponent,
+    ShowOrderComponent,
   ],
   imports: [
     CommonModule,
@@ -80,6 +88,7 @@ const routes: Routes = [
     MatSelectModule,
     MatSortModule,
     MatSnackBarModule,
+    MatBadgeModule,
     RouterModule.forChild(routes),
   ],
 })

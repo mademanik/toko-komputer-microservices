@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
@@ -6,14 +6,11 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent {
   isMobile: boolean = false;
   menuOpen: boolean = false;
 
   constructor(private observer: BreakpointObserver) {}
-  ngOnInit() {
-    console.log(this.menuOpen);
-  }
 
   ngAfterViewInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((res) => {

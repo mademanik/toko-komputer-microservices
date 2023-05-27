@@ -68,7 +68,7 @@ mat-divider {
 
 mat-toolbar {
   display: grid;
-  grid-template-areas: "sidebarToggle navItems profile";
+  grid-template-areas: "sidebarToggle navItems notif profile";
   grid-template-columns: auto 1fr auto;
   height: var(--header-height);
   background: #004a9f;
@@ -77,6 +77,11 @@ mat-toolbar {
 
 .sidebar-toggle {
   grid-area: sidebarToggle;
+}
+
+app-notif {
+  grid-area: notif;
+  margin-right: 18px;
 }
 
 app-profile {

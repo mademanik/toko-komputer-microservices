@@ -2,8 +2,8 @@ export class Product {
   id?: any;
   title?: string;
   description?: string;
-  price?: DoubleRange;
-  stock?: DoubleRange;
+  price?: string;
+  stock?: string;
   brand?: string;
   category?: string;
   thumbnail?: string;

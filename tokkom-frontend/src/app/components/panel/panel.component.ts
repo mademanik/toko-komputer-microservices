@@ -8,9 +8,11 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './panel.component.html',
   styleUrls: ['./panel.component.scss'],
 })
-export class PanelComponent {
+export class PanelComponent implements OnInit {
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
+
+  activeMenu: string = '';
 
   isMobile: boolean = false;
 
@@ -19,6 +21,10 @@ export class PanelComponent {
     private router: Router,
     private route: ActivatedRoute
   ) {}
+
+  ngOnInit(): void {
+    this.activeMenu = <string>this.router.url.split('/').pop();
+  }
 
   ngAfterViewInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((res) => {
@@ -36,5 +42,9 @@ export class PanelComponent {
 
   sidenavToggle() {
     this.sidenav.toggle();
+  }
+
+  setMenuActive(menu: string) {
+    this.activeMenu = menu;
   }
 }

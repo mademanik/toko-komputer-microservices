@@ -6,14 +6,11 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   isMobile: boolean = false;
   menuOpen: boolean = false;
 
   constructor(private observer: BreakpointObserver) {}
-  ngOnInit() {
-    console.log(this.menuOpen);
-  }
 
   ngAfterViewInit() {
     this.observer.observe(['(max-width: 800px)']).subscribe((res) => {

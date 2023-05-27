@@ -1,0 +1,55 @@
+<h2 mat-dialog-title>Show Order</h2>
+<mat-dialog-content class="mat-typography" *ngIf="row">
+  <mat-form-field class="form-first" appearance="outline">
+    <mat-label>Title</mat-label>
+    <input
+      matInput
+      placeholder="Product Title"
+      value="{{ row.productTitle }}"
+      readonly
+    />
+  </mat-form-field>
+
+  <mat-form-field class="form-first" appearance="outline">
+    <mat-label>Customer Name</mat-label>
+    <input
+      matInput
+      placeholder="Customer Name"
+      value="{{ row.customerName }}"
+      readonly
+    />
+  </mat-form-field>
+
+  <mat-form-field class="form-first" appearance="outline">
+    <mat-label>Customer Address</mat-label>
+    <input
+      matInput
+      placeholder="Customer Address"
+      value="{{ row.customerAddress }}"
+      readonly
+    />
+  </mat-form-field>
+
+  <mat-form-field class="form-first" appearance="outline">
+    <mat-label>Customer Phone Number</mat-label>
+    <input
+      matInput
+      placeholder="Customer Phone Number"
+      value="{{ row.customerPhoneNumber }}"
+      readonly
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Description</mat-label>
+    <textarea
+      placeholder="Description"
+      matInput
+      value="{{ row.description }}"
+      readonly
+    ></textarea>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button color="accent" mat-dialog-close>Close</button>
+</mat-dialog-actions>
