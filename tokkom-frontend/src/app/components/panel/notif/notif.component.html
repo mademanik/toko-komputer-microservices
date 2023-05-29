@@ -4,12 +4,16 @@
     [matMenuTriggerFor]="menu"
     aria-label="Example icon-button with a menu"
   >
-    <mat-icon matBadge="2" matBadgeColor="warn">notifications_none</mat-icon>
+    <mat-icon matBadge="{{ notifBadge }}" matBadgeColor="warn"
+      >notifications_none</mat-icon
+    >
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item>
-      <mat-icon>new_releases</mat-icon>
-      <span>New Order : </span>
-    </button>
+    <div *ngFor="let notif of activeNotif">
+      <button mat-menu-item (click)="setExpired(notif.id)">
+        <mat-icon style="padding-right: 20px">new_releases</mat-icon>
+        <span style="font-size: x-small">{{ notif.message }}</span>
+      </button>
+    </div>
   </mat-menu>
 </div>

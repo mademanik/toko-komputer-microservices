@@ -8,6 +8,7 @@ import org.tokkom.repository.NotificationRepository;
 import org.tokkom.model.Notification;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -19,6 +20,11 @@ public class NotificationConsumerImpl implements NotificationConsumer {
     @Override
     public List<Notification> getAll() {
         return notificationRepository.findAll();
+    }
+
+    @Override
+    public Optional<Notification> getById(Long id) {
+        return notificationRepository.findById(id);
     }
 
     @Override

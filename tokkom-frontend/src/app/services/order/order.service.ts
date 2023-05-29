@@ -17,10 +17,6 @@ export class OrderService {
 
   private baseUrl = environment.baseUrl;
 
-  private headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-  });
-
   createOrder(id: any, formData: FormData) {
     const req = new HttpRequest(
       'POST',

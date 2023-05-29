@@ -83,15 +83,13 @@ export class ProductsComponent implements AfterViewInit, OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.getProducts();
 
-      if (result.message == 'success') {
+      if (result?.message == 'success') {
         this.openSnackbarSuccess('Success', 'Product successfully created');
-      } else if (result.message == 'error') {
+      } else if (result?.message == 'error') {
         this.openSnackbarError('Error', 'Product create Failed');
-      } else if (result.message == 'invalid') {
+      } else if (result?.message == 'invalid') {
         this.openSnackbarError('Error', 'Form invalid');
       }
-
-      this.router.navigate(['/panel/products']);
     });
   }
 
@@ -117,15 +115,13 @@ export class ProductsComponent implements AfterViewInit, OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.getProducts();
 
-      if (result.message == 'success') {
+      if (result?.message == 'success') {
         this.openSnackbarSuccess('Success', 'Product successfully updated');
-      } else if (result.message == 'error') {
+      } else if (result?.message == 'error') {
         this.openSnackbarError('Error', 'Product create Failed');
-      } else if (result.message == 'invalid') {
+      } else if (result?.message == 'invalid') {
         this.openSnackbarError('Error', 'Form invalid');
       }
-
-      this.router.navigate(['/panel/products']);
     });
   }
 
@@ -139,15 +135,13 @@ export class ProductsComponent implements AfterViewInit, OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       this.getProducts();
 
-      if (result.message == 'success') {
+      if (result?.message == 'success') {
         this.openSnackbarSuccess('Success', 'Product deleted successfully');
-      } else if (result.message == 'error') {
+      } else if (result?.message == 'error') {
         this.openSnackbarError('Error', 'Product create Failed');
-      } else if (result.message == 'invalid') {
+      } else if (result?.message == 'invalid') {
         this.openSnackbarError('Error', 'Form invalid');
       }
-
-      this.router.navigate(['/panel/products']);
     });
   }
 

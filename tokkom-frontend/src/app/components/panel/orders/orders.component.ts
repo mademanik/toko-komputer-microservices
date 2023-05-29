@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, MatSortable } from '@angular/material/sort';
 import { OrderService } from 'src/app/services/order/order.service';
 import { Order } from 'src/app/models/order.model';
 import { ShowOrderComponent } from './show-order/show-order.component';
@@ -37,6 +37,9 @@ export class OrdersComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+
+    // script di bawah untuk initial sorting
+    // this.sort.sort({ id: 'productQty', start: 'desc' } as MatSortable);
     this.dataSource.sort = this.sort;
   }
 

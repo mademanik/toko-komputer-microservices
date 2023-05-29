@@ -63,8 +63,6 @@ export class ProductsComponent implements OnInit {
       } else if (result?.message == 'invalid') {
         this.openSnackbarError('Error', 'Form invalid');
       }
-
-      this.router.navigate(['/']);
     });
   }
 
@@ -86,8 +84,6 @@ export class ProductsComponent implements OnInit {
       } else if (result?.message == 'invalid') {
         this.openSnackbarError('Error', 'Form invalid');
       }
-
-      this.router.navigate(['/']);
     });
   }
 

@@ -1,7 +1,9 @@
 package org.tokkom.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tokkom.dto.NotificationSetExpiredRequest;
@@ -9,6 +11,7 @@ import org.tokkom.model.Notification;
 import org.tokkom.service.NotificationConsumer;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/tokkom/api/notification")
@@ -28,15 +31,33 @@ public class NotificationController {
         return ResponseEntity.ok().body(notifications);
     }
 
-    @PostMapping("/setExpired")
-    public ResponseEntity<String> setExpiredNotification(@RequestBody NotificationSetExpiredRequest notificationSetExpiredRequest) {
-        Boolean setToExpire = notificationConsumer.setExpiration(notificationSetExpiredRequest);
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<Notification>> getNotificationById(@PathVariable Long id) {
+        Optional<Notification> notification = notificationConsumer.getById(id);
+        return ResponseEntity.ok().body(notification);
+    }
 
-        if (!setToExpire) {
-            log.error("Failed set expiration with id : " + notificationSetExpiredRequest.getId());
-            return ResponseEntity.internalServerError().body("Failed set expiration with id : " + notificationSetExpiredRequest.getId());
+    @PostMapping("/setExpired")
+    public ResponseEntity<Optional<Notification>> setExpiredNotification(@RequestParam String notifExpire) {
+        NotificationSetExpiredRequest notificationSetExpiredRequest = new NotificationSetExpiredRequest();
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            notificationSetExpiredRequest = objectMapper.readValue(notifExpire, NotificationSetExpiredRequest.class);
+
+            Boolean setToExpire = notificationConsumer.setExpiration(notificationSetExpiredRequest);
+
+            if (!setToExpire) {
+                log.error("Failed set expiration with id : " + notificationSetExpiredRequest.getId());
+                return new ResponseEntity<>(null, HttpStatus.FORBIDDEN);
+            }
+
+            Optional<Notification> notification = notificationConsumer.getById(notificationSetExpiredRequest.getId());
+            return ResponseEntity.ok().body(notification);
+        } catch (Exception e) {
+            log.info("Error creating order {}", e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-        return ResponseEntity.ok().body("Notification expiration with id : " + notificationSetExpiredRequest.getId() + " successfully updated");
     }
 }

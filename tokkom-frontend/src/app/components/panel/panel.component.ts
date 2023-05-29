@@ -47,4 +47,8 @@ export class PanelComponent implements OnInit {
   setMenuActive(menu: string) {
     this.activeMenu = menu;
   }
+
+  getNotifEvent(event: any) {
+    this.activeMenu = event.menu;
+  }
 }
