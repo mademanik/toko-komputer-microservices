@@ -4,7 +4,7 @@
     [matMenuTriggerFor]="menu"
     aria-label="Example icon-button with a menu"
   >
-    <mat-icon matBadge="{{ notifBadge }}" matBadgeColor="warn"
+    <mat-icon matBadge="{{ notifBadge ? notifBadge : '' }}" matBadgeColor="warn"
       >notifications_none</mat-icon
     >
   </button>
