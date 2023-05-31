@@ -1,14 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import {
   FormBuilder,
   FormGroup,
-  FormControl,
   Validators,
 } from '@angular/forms';
 import { ProductService } from 'src/app/services/product/product.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-product',
@@ -43,8 +40,6 @@ export class AddProductComponent {
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
-    private route: ActivatedRoute,
-    private router: Router,
     public dialogRef: MatDialogRef<AddProductComponent>
   ) {}
 

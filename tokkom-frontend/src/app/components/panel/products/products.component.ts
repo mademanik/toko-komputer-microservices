@@ -1,20 +1,15 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { AddProductComponent } from './add-product/add-product.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductService } from 'src/app/services/product/product.service';
 import { ShowProductComponent } from './show-product/show-product.component';
 import { DeleteProductComponent } from './delete-product/delete-product.component';
-import { ActivatedRoute, Router } from '@angular/router';
 import { EditProductComponent } from './edit-product/edit-product.component';
 import { MatSort } from '@angular/material/sort';
 import { Product } from 'src/app/models/product.model';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-products',
@@ -40,8 +35,6 @@ export class ProductsComponent implements AfterViewInit, OnInit {
   constructor(
     public dialog: MatDialog,
     private productService: ProductService,
-    private route: ActivatedRoute,
-    private router: Router,
     private _snackBar: MatSnackBar
   ) {}
 

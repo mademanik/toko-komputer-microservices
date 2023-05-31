@@ -1,6 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product/product.service';
 
 @Component({
@@ -15,8 +14,6 @@ export class DeleteProductComponent {
     public data: { id: any },
     private productService: ProductService,
     private dialogRef: MatDialogRef<DeleteProductComponent>,
-    private route: ActivatedRoute,
-    private router: Router
   ) {}
 
   deleteProduct() {

@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { OrderService } from 'src/app/services/order/order.service';
-import { ProductService } from 'src/app/services/product/product.service';
 import { environment } from 'src/environments/environment';
 
 @Component({

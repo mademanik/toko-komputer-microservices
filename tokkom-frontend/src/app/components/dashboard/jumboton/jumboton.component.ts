@@ -15,7 +15,6 @@ export class JumbotonComponent implements OnInit {
       typeSpeed: 50,
       backSpeed: 50,
       showCursor: false,
-      // cursorChar: '|',
       loop: true,
     };
 

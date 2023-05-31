@@ -4,10 +4,8 @@ import { ProductService } from 'src/app/services/product/product.service';
 import {
   FormBuilder,
   FormGroup,
-  FormControl,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -50,8 +48,6 @@ export class EditProductComponent implements OnInit {
     public data: { id: any },
     private formBuilder: FormBuilder,
     private productService: ProductService,
-    private route: ActivatedRoute,
-    private router: Router,
     private dialogRef: MatDialogRef<EditProductComponent>
   ) {}
 

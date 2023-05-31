@@ -1,13 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { FormProductComponent } from './form-product/form-product.component';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from 'src/app/services/product/product.service';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Product } from 'src/app/models/product.model';
 import { environment } from 'src/environments/environment';
 import { DetailProductComponent } from './detail-product/detail-product.component';
@@ -26,8 +21,6 @@ export class ProductsComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private productService: ProductService,
-    private route: ActivatedRoute,
-    private router: Router,
     private _snackBar: MatSnackBar
   ) {}
 

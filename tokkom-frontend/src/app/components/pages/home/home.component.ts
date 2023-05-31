@@ -1,12 +1,11 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { AddProductComponent } from '../../panel/products/add-product/add-product.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { ProductService } from 'src/app/services/product/product.service';
 import { OrderService } from 'src/app/services/order/order.service';
 import { NotificationService } from 'src/app/services/notification/notification.service';
 import { Product } from 'src/app/models/product.model';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
