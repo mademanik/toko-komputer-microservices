@@ -22,18 +22,18 @@
 1. Springboot
 2. Spring Cloud Gateway
 3. Eureka Server
-4. Mysql
-5. Postgre
-6. MongoDB
-7. Zipkin
-8. ELK
-9. Redis
-10. Kafka
-11. Docker
+4. Resilience4j Circuit Breaker
+5. Rest API
+6. Mysql
+7. Postgre
+8. MongoDB
+9. Zipkin
+10. ELK
+11. Redis
+12. Kafka
+13. Docker
 
 ### Installation Steps
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the rep
+1. Step 1
+2. ...
