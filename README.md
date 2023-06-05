@@ -50,6 +50,11 @@
    npm -v
    8.19.4
    ```
+4. Check docker version
+   ```
+   docker --version
+   Docker version 20.10.23, build 7155243
+   ```
 
 ### Installation Steps
 
