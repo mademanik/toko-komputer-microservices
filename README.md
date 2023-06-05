@@ -92,5 +92,5 @@
    npm start
    ```
 9. open to port http://localhost:8081 to open landing page
-10.open to port http://localhost:8081/panel to open panel page
-11.running client done
+10. open to port http://localhost:8081/panel to open panel page
+11. running client done
