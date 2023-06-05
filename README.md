@@ -33,7 +33,59 @@
 12. Kafka
 13. Docker
 
+### Prerequisite
+
+1. Check ng version
+   ```
+   ng version
+   Angular CLI: 15.2.5
+   ```
+2. Check node version
+   ```
+   node -v
+   v16.20.0
+   ```
+3. Check npm version
+   ```
+   npm -v
+   8.19.4
+   ```
+
 ### Installation Steps
 
-1. Step 1
-2. ...
+1. Clone this repo
+   ```
+   git clone https://github.com/mademanik/toko-komputer-microservices.git
+   ```
+   
+#### Running Springboot Backend Server
+2. cd into toko-komputer-microservices
+   ```
+   cd toko-komputer-microservices
+   ```
+3. cd into tokkom-backend
+   ```
+   cd tokkom-backend
+   ```
+4. run docker compose command
+   ```
+   docker compose up
+   ```
+5. running server done
+
+#### Running Angular Frontend Client
+6. cd into tokkom-frontend
+   ```
+   cd tokkom-frontend
+   ```
+7. run npm install or yarn to download package dependency
+   ```
+   npm i
+   ```
+8. run npm start to run angular client frontend
+   ```
+   npm start
+   ```
+9. open to port http://localhost:8081 to open landing page
+10.open to port http://localhost:8081/panel to open panel page
+11.running client done
