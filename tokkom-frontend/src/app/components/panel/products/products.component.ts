@@ -74,7 +74,9 @@ export class ProductsComponent implements AfterViewInit, OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-      this.getProducts();
+      setTimeout(() => {
+        this.getProducts();
+      }, 500);
 
       if (result?.message == 'success') {
         this.openSnackbarSuccess('Success', 'Product successfully created');
