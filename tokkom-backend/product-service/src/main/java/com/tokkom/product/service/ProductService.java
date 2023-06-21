@@ -3,20 +3,19 @@ package com.tokkom.product.service;
 import com.tokkom.product.dto.request.ProductRequest;
 import com.tokkom.product.dto.request.ProductStockRequest;
 import com.tokkom.product.dto.response.ProductResponse;
-import com.tokkom.product.model.Product;
-import org.springframework.stereotype.Service;
+import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
-import org.springframework.core.io.Resource;
 
 public interface ProductService {
-
     public void cacheInit();
+
     public ProductResponse createProduct(ProductRequest productRequest, MultipartFile thumbnail, MultipartFile[] images);
 
     public Resource load(String id, String filename);
+
     public List<ProductResponse> getAllProducts();
 
     public List<ProductResponse> getAllProductsByTitle(String title);
@@ -32,4 +31,6 @@ public interface ProductService {
     public Boolean updateProductStock(String id, Double currentStock, Double reqStock);
 
     public ProductResponse updateProduct(String id, ProductRequest productRequest, MultipartFile thumbnail, List<MultipartFile> images);
+
+
 }

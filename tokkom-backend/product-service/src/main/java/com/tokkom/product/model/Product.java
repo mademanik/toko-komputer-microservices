@@ -1,6 +1,9 @@
 package com.tokkom.product.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -27,4 +30,5 @@ public class Product implements Serializable {
     private String thumbnail;
     private List<String> images;
     private String url;
+
 }

@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ProductResponse implements Serializable {
 
@@ -26,4 +26,6 @@ public class ProductResponse implements Serializable {
     private String thumbnail;
     private List<String> images;
     private String url;
+
+
 }

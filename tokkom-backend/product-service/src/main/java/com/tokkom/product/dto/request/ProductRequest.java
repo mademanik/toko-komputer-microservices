@@ -6,11 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class ProductRequest implements Serializable {
 
@@ -22,5 +21,4 @@ public class ProductRequest implements Serializable {
     private Double stock;
     private String brand;
     private String category;
-
 }

@@ -11,8 +11,9 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends MongoRepository<Product, String> {
     List<Product> findByTitleContaining(String title);
+
     List<Product> findByCategoryContaining(String category);
 
-    @Query(value="{'_id' :  ?0}", fields="{ 'stock' : 1 }")
+    @Query(value = "{'_id' :  ?0}", fields = "{'stock' :  1}")
     ProductStockRequest findProductStockById(String _id);
 }
