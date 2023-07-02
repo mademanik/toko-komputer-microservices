@@ -18,6 +18,7 @@
     <modules>
         <module>product-service</module>
         <module>discovery-service</module>
+        <module>gateway-service</module>
     </modules>
 
     <properties>
